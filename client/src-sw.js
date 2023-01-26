@@ -26,22 +26,16 @@ warmStrategyCache({
 
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
-const assetCache = new CacheFirst({
-  cacheName: 'asset-cache',
-  plugins: [
-    new CacheableResponsePlugin({
-      statuses: [200],
-    }),
-    new ExpirationPlugin({
-      maxAgeSeconds: 7 * 24 * 60 * 60,
-    }),
-  ],
-});
-
 registerRoute(
-  // Use a regular expression to match requests for assets
-  ({url}) => url.pathname.startsWith('/assets/'),
-  // Use the CacheFirst strategy for handling requests
-  assetCache
+  ({ request }) => ["style", "script", "worker"].includes(request.destination),
+
+  new StaleWhileRevalidate({
+    cacheName: "asset-cache",
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ]
+  })
 );
 

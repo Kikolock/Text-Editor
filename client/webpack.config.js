@@ -19,8 +19,8 @@ module.exports = () => {
         template: './src/index.html',
       }),
       new WebpackPwaManifest({
-        name: 'My PWA Text Editor',
-        short_name: 'Text Editor',
+        name: 'JATE',
+        short_name: 'JATE',
         description: 'A simple text editor that works offline',
         background_color: '#ffffff',
         theme_color: '#000000',
@@ -31,33 +31,26 @@ module.exports = () => {
             destination: path.join('assets', 'icons'),
           },
         ],
-        start_url: '/',
-        display: 'standalone',
-        inject: true,
-        crossorigin: 'use-credentials',
-      }),
-      new InjectManifest({
-        swSrc: './src/sw.js',
-        swDest: 'service-worker.js',
-        importsDirectory: 'js',
       }),
     ],
     module: {
       rules: [
         {
-          test: /\.css$/,
-          use: [ 'style-loader', 'css-loader' ]
+          test: /\.css$/i,
+          use:['style-loader', 'css-loader']
         },
         {
-          test: /\.js$/,
-          exclude: /(node_modules|bower_components)/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env']
+          test:/\.m?js$/,
+          exclude:/node_modules/,
+
+          use:{
+            loader:'babel-loader',
+            options:{
+              presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
             }
           }
-        },
+        }
       ],
     },
   };
