@@ -15,6 +15,10 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
+      new InjectManifest({
+        swSrc: './src/sw.js',
+        swDest: 'sw.js',
+      }),
       new HtmlWebpackPlugin({
         template: './src/index.html',
       }),
